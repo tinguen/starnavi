@@ -22,7 +22,7 @@ const Startup = (props) => {
     const ms = Object.entries(allModes)
     if (ms.length) {
       const cleanupFuncs = ms.map((mode) => {
-        const handleFunc = (e) => {
+        const handleListener = (e) => {
           if (!e.matches) {
             dispatch(removeFromModes(mode[0]))
             dispatch(clearBoard())
@@ -30,8 +30,8 @@ const Startup = (props) => {
           } else dispatch(addToModes(mode[0], mode[1]))
         }
         const mql = window.matchMedia(`(min-width: ${mode[1].field * 2 + 5}rem)`)
-        mql.addListener(handleFunc)
-        return () => mql.removeListener(handleFunc)
+        mql.addListener(handleListener)
+        return () => mql.removeListener(handleListener)
       })
       return () => {
         cleanupFuncs.forEach((func) => func())
