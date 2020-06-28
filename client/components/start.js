@@ -12,8 +12,8 @@ const Start = (props) => {
   const name = useSelector((s) => s.game.name)
   const dispatch = useDispatch()
   return (
-    <div className={classNames('flex justify-center items-center', className)}>
-      <div className="shape flex-auto">
+    <div className={classNames('flex justify-center items-center flex-auto', className)}>
+      <div className="shape">
         <div className="shape-l-big" />
         <div className="shape-l-med" />
         <div className="shape-l-small" />

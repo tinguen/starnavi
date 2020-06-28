@@ -104,8 +104,9 @@ $shape-10: polygon(100% 8%, 96% 90%, 6% 100%, 0 0);
   align-items: center;
   justify-content: center;
   display: flex;
+  flex: 1 1 auto;
   height: 25rem;
-  width: 25rem;
+  max-width: 25rem;
   margin: 0 0.25rem;
   position: relative;
   > * {

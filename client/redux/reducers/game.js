@@ -18,6 +18,7 @@ const SET_TIMEOUT_ID = 'SET_TIMEOUT_ID'
 const SET_SELECTED = 'SET_SELECTED'
 const CHANGE_IS_PLAYING = 'CHANGE_IS_PLAYING'
 const FETCH_STATE = 'FETCH_STATE'
+const FILTER_MODES = 'FILTER_MODES'
 
 function postWinner(winner) {
   return axios
@@ -44,6 +45,7 @@ const initialState = {
   playerScore: 0,
   computerScore: 0,
   modes: {},
+  allModes: {},
   winners: [],
   winner: '',
   timeoutId: null,
@@ -66,14 +68,14 @@ export default (state = initialState, action) => {
       return {
         ...state,
         currentMode: { name: action.mode, ...state.modes[action.mode] },
-        tiles: Array.from(Array(state.modes[action.mode].field ** 2), () => ({
+        tiles: Array.from(Array(state.allModes[action.mode].field ** 2), () => ({
           id: shortid.generate(),
           state: tileColorStates.free
         }))
       }
     }
     case FETCH_MODES: {
-      return { ...state, modes: action.modes }
+      return { ...state, modes: action.modes, allModes: action.allModes || action.modes }
     }
     case CLEAR: {
       return { ...initialState }
@@ -114,6 +116,9 @@ export default (state = initialState, action) => {
           state: tileColorStates.free
         }))
       }
+    }
+    case FILTER_MODES: {
+      return { ...state, modes: action.modes }
     }
     default:
       return state
@@ -202,10 +207,10 @@ export function incComputerScore() {
 
 export function clearBoard() {
   return (dispatch, getState) => {
-    const { modes, winners, name, currentMode, timeoutId } = getState().game
+    const { modes, winners, name, currentMode, timeoutId, allModes } = getState().game
     clearTimeout(timeoutId)
     dispatch(clear())
-    dispatch({ type: FETCH_MODES, modes })
+    dispatch({ type: FETCH_MODES, modes, allModes })
     dispatch({ type: FETCH_WINNERS, winners })
     if (currentMode.name) dispatch({ type: SET_CURRENT_MODE, mode: currentMode.name })
     dispatch({ type: SET_NAME, name })
@@ -269,5 +274,21 @@ export function fetchState() {
       dispatch({ type: SET_CURRENT_MODE, mode: modeName })
     }
     return dispatch({ type: SET_NAME, name })
+  }
+}
+
+export function addToModes(name, mode) {
+  return (dispatch, getState) => {
+    const modes = { ...getState().game.modes }
+    modes[name] = mode
+    return dispatch({ type: FILTER_MODES, modes })
+  }
+}
+
+export function removeFromModes(name) {
+  return (dispatch, getState) => {
+    const modes = { ...getState().game.modes }
+    delete modes[name]
+    return dispatch({ type: FILTER_MODES, modes })
   }
 }
