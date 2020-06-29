@@ -16,10 +16,31 @@
     "lint:server": "eslint ./server/**/**.js",
     "watch:server": "nodemon --legacy-watch start.js --watch server --watch client --exec \"npm run lint:server  --scripts-prepend-node-path && node\"",
     "build:prod": "cross-env NODE_ENV=production webpack --config webpack.production.config.js --progress --profile --colors",
-    "heroku-postbuild": "yarn run build:prod"
+    "heroku-postbuild": "yarn run build:prod",
+    "test": "jest",
+    "test:watch": "jest --watch",
+    "coverage": "jest --coverage"
   },
   "author": "",
   "license": "MIT",
+  "jest": {
+    "setupFiles": [
+      "<rootDir>/config/jest/shim.js"
+    ],
+    "collectCoverageFrom": [
+      "client/**/*.{js,jsx,ts,tsx}"
+    ],
+    "moduleNameMapper": {
+      "\\.(jpg|jpeg|png|gif|eot|otf|webp|svg|ttf|woff|woff2|mp4|webm|wav|mp3|m4a|aac|oga)$": "<rootDir>/config/jest/assetsTransformer.js",
+      "\\.(css|less)$": "<rootDir>/config/jest/assetsTransformer.js"
+    },
+    "testMatch": [
+      "**/?(*.)(spec|test).js?(x)"
+    ],
+    "transform": {
+      "\\.js$": "babel-jest"
+    }
+  },
   "dependencies": {
     "@babel/cli": "^7.10.1",
     "@babel/core": "^7.10.2",
@@ -50,6 +71,7 @@
     "axios": "^0.19.2",
     "babel-core": "7.0.0-bridge.0",
     "babel-eslint": "10.1.0",
+    "babel-jest": "^26.1.0",
     "babel-loader": "^8.1.0",
     "babel-plugin-css-modules-transform": "^1.6.2",
     "babel-plugin-emotion": "^10.0.33",
@@ -111,6 +133,9 @@
     "glob": "^7.1.6",
     "hard-source-webpack-plugin": "^0.13.1",
     "html-webpack-plugin": "4.3.0",
+    "husky": "^4.2.5",
+    "jest": "^26.1.0",
+    "jest-cli": "^26.1.0",
     "mini-css-extract-plugin": "^0.9.0",
     "node-hot-loader": "^1.20.0",
     "node-sass": "^4.14.1",
@@ -134,5 +159,11 @@
     "ignore": [
       "*.hot-update.json"
     ]
+  },
+  "husky": {
+    "hooks": {
+      "pre-commit": "cross-env npm run lint && npm test",
+      "pre-push": "cross-env npm run lint && npm test"
+    }
   }
 }
