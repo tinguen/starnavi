@@ -8,7 +8,7 @@ const Leaderboard = (props) => {
   const winners = useSelector((s) => s.game.winners)
   return (
     <div className={classNames(className)}>
-      <h1 className="p-4 text-gray-500 font-bold">Leaderboard</h1>
+      <h1 className="p-4 text-gray-500 font-bold text-center">Leaderboard</h1>
       {winners.map((winner) => {
         return (
           <div

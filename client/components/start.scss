@@ -37,15 +37,6 @@ $shape-10: polygon(100% 8%, 96% 90%, 6% 100%, 0 0);
 }
 
 @keyframes morph-4 {
-  0% { clip-path: $shape-4; }
-  20% { clip-path: $shape-10; }
-  40% { clip-path: $shape-9; }
-  60% { clip-path: $shape-8; }
-  80% { clip-path: $shape-7; }
-  100% { clip-path: $shape-4; }
-}
-
-@keyframes morph-5 {
   0% { clip-path: $shape-5; }
   20% { clip-path: $shape-7; }
   40% { clip-path: $shape-6; }
@@ -54,53 +45,7 @@ $shape-10: polygon(100% 8%, 96% 90%, 6% 100%, 0 0);
   100% { clip-path: $shape-5; }
 }
 
-@keyframes morph-6 {
-  0% { clip-path: $shape-6; }
-  20% { clip-path: $shape-4; }
-  40% { clip-path: $shape-3; }
-  60% { clip-path: $shape-2; }
-  80% { clip-path: $shape-1; }
-  100% { clip-path: $shape-6; }
-}
-
-@keyframes morph-7 {
-  0% { clip-path: $shape-7; }
-  20% { clip-path: $shape-10; }
-  40% { clip-path: $shape-1; }
-  60% { clip-path: $shape-9; }
-  80% { clip-path: $shape-2; }
-  100% { clip-path: $shape-7; }
-}
-
-@keyframes morph-8 {
-  0% { clip-path: $shape-8; }
-  20% { clip-path: $shape-7; }
-  40% { clip-path: $shape-3; }
-  60% { clip-path: $shape-6; }
-  80% { clip-path: $shape-4; }
-  100% { clip-path: $shape-8; }
-}
-
-@keyframes morph-9 {
-  0% { clip-path: $shape-9; }
-  20% { clip-path: $shape-8; }
-  40% { clip-path: $shape-4; }
-  60% { clip-path: $shape-10; }
-  80% { clip-path: $shape-7; }
-  100% { clip-path: $shape-9; }
-}
-
-@keyframes morph-10 {
-  0% { clip-path: $shape-10; }
-  20% { clip-path: $shape-5; }
-  40% { clip-path: $shape-3; }
-  60% { clip-path: $shape-8; }
-  80% { clip-path: $shape-5; }
-  100% { clip-path: $shape-10; }
-}
-
 .shape {
-
   align-items: center;
   justify-content: center;
   display: flex;
@@ -119,54 +64,45 @@ $shape-10: polygon(100% 8%, 96% 90%, 6% 100%, 0 0);
     transform: translate(-50%, -50%);
   }
   &:first-child {
-    .shape-l-big {
+    .shape__pol-big {
       animation-name: morph-1;
       background: #63b3ed;
     }
-    .shape-l-med {
+    .shape__pol-med {
       animation-name: morph-2;
       background: #fc8181;
     }
-    .shape-l-small {
-      animation-name: morph-5;
+    .shape__pol-small {
+      animation-name: morph-4;
       background: #9ae6b4;
     }
-    .shape-l-tiny {
+    .shape__pol-tiny {
       animation-name: morph-3;
     }
   }
 }
 
-.shape-l-big {
+.shape__pol-big {
   height: 98%;
   width: 98%;
 }
 
-.shape-l-med {
+.shape__pol-med {
   height: 87.5%;
   width: 87.5%;
 }
 
-.shape-l-small {
+.shape__pol-small {
   height: 75%;
   width: 75%;
 }
 
-.shape-l-tiny {
+.shape__pol-tiny {
   align-items: center;
   background: #fff;
   display: flex;
   justify-content: center;
+  flex-direction: column;
   height: 62.5%;
   width: 62.5%;
-}
-
-
-.shape-text {
-  display: block;
-  color: #f1f1f1;
-  font-family: "San Francisco", "Roboto", "Segoe UI", "Helvetica Neue", "Lucida Grande", sans-serif;
-  font-size: 0.5rem;
-  text-align: center;
-  text-transform: uppercase;
 }

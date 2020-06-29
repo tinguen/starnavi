@@ -17,20 +17,19 @@ const UPDATE_TILE_STATE = 'UPDATE_TILE_STATE'
 const SET_TIMEOUT_ID = 'SET_TIMEOUT_ID'
 const SET_SELECTED = 'SET_SELECTED'
 const CHANGE_IS_PLAYING = 'CHANGE_IS_PLAYING'
-const FETCH_STATE = 'FETCH_STATE'
 const FILTER_MODES = 'FILTER_MODES'
-
-function postWinner(winner) {
-  return axios
-    .post(`${SERVER_URL}/api/v1/winners`, { winner, date: new Date().toString() })
-    .catch(() => {})
-}
 
 export const tileColorStates = {
   free: 0,
   selected: 1,
   clicked: 2,
   missed: 3
+}
+
+function postWinner(winner) {
+  return axios
+    .post(`${SERVER_URL}/api/v1/winners`, { winner, date: new Date().toString() })
+    .catch(() => {})
 }
 
 function getRandomTileId(tiles) {
@@ -106,17 +105,6 @@ export default (state = initialState, action) => {
     case CHANGE_IS_PLAYING: {
       return { ...state, isPlaying: !state.isPlaying }
     }
-    case FETCH_STATE: {
-      return {
-        ...state,
-        name: action.name,
-        currentMode: action.mode,
-        tiles: Array.from(Array(action.mode.field ** 2), () => ({
-          id: shortid.generate(),
-          state: tileColorStates.free
-        }))
-      }
-    }
     case FILTER_MODES: {
       return { ...state, modes: action.modes }
     }
@@ -165,8 +153,7 @@ export function setSelected(selected) {
 
 export function changeIsPlaying() {
   return (dispatch, getState) => {
-    const { isPlaying } = getState().game
-    const { tiles } = getState().game
+    const { isPlaying, tiles } = getState().game
     if (!isPlaying) dispatch(setSelected(getRandomTileId(tiles)))
     return dispatch({ type: CHANGE_IS_PLAYING })
   }
@@ -240,13 +227,10 @@ export function setTileState(id, newState) {
           if (newState === tileColorStates.clicked) dispatch(incPlayerScore())
           else dispatch(incComputerScore())
 
-          const { timeoutId } = getState().game
+          const { timeoutId, tiles, isPlaying, winner } = getState().game
           clearTimeout(timeoutId)
           dispatch(setTimeoutId(null))
 
-          const { tiles } = getState().game
-          const { isPlaying } = getState().game
-          const { winner } = getState().game
           if (isPlaying && !winner) dispatch(setSelected(getRandomTileId(tiles)))
           return dispatch({ type: UPDATE_TILE_STATE, id, state: newState })
         }
@@ -256,24 +240,6 @@ export function setTileState(id, newState) {
         return dispatch({ type: '' })
     }
     return dispatch({ type: '' })
-  }
-}
-
-export function fetchState() {
-  return (dispatch, getState) => {
-    const name = localStorage.getItem('name')
-    const modeName = localStorage.getItem('modeName')
-    if (!name && typeof name !== 'string') {
-      return { type: '' }
-    }
-    if (!modeName && typeof modeName !== 'string') {
-      return { type: '' }
-    }
-    const { modes } = getState().game
-    if (modeName in Object.keys(modes)) {
-      dispatch({ type: SET_CURRENT_MODE, mode: modeName })
-    }
-    return dispatch({ type: SET_NAME, name })
   }
 }
 

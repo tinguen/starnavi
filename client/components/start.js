@@ -21,10 +21,10 @@ const Start = (props) => {
   return (
     <div className={classNames('flex justify-center items-center flex-auto', className)}>
       <div className="shape">
-        <div className="shape-l-big" />
-        <div className="shape-l-med" />
-        <div className="shape-l-small" />
-        <div className="shape-l-tiny flex flex-col">
+        <div className="shape__pol-big" />
+        <div className="shape__pol-med" />
+        <div className="shape__pol-small" />
+        <div className="shape__pol-tiny">
           <ModeDropdown />
           <p className={`text-red-500 text-xs italic ${dropdownErr ? 'block' : 'hidden'}`}>
             Please choose game mode!

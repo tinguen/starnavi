@@ -61,6 +61,7 @@ const GameConfig = (props) => {
           if (Object.keys(mode).length === 0 && mode.constructor === Object) setDropdownErr(true)
           else if (winner) dispatch(clearBoard())
           if (name && !(Object.keys(mode).length === 0 && mode.constructor === Object)) {
+            setNameErr(false)
             if (isPlaying) {
               dispatch(changeIsPlaying())
               dispatch(clearBoard())

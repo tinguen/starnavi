@@ -182,7 +182,6 @@ const config = {
       {
         patterns: [
           { from: `${__dirname}/client/assets/images`, to: 'images' },
-          { from: `${__dirname}/client/assets/fonts`, to: 'fonts' },
 
           { from: `${__dirname}/client/assets/sitemap.xml`, to: 'sitemap.xml' },
           { from: `${__dirname}/client/index.html`, to: 'index.html' },

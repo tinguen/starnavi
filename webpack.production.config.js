@@ -193,7 +193,6 @@ const config = {
       {
         patterns: [
           { from: 'assets/images', to: 'images' },
-          { from: 'assets/fonts', to: 'fonts' },
 
           { from: 'assets/sitemap.xml', to: 'sitemap.xml' },
           { from: 'assets/robots.txt', to: 'robots.txt' },
