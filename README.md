@@ -4,7 +4,7 @@
 
 1. Clone this repo using:
   ```shell
-  $ git clone git@github.com:tinguen/starnavi.git
+  $ git clone https://github.com/tinguen/starnavi.git
   ```
 
 2. To install dependencies and clean the git repo run:
@@ -46,7 +46,7 @@ This directory contains compiled project files
 
 #### `webpack.development.config.js` `and webpack.production.config.js`
 Project environment configs. Webpack uses proper config depending on defined application environment.
-By default `webpack.development.config.js` is used unless you build the application with --config webpack.production.frontend.config.js variable.
+By default `webpack.development.config.js` is used unless you build the application with --config webpack.production.config.js variable.
 
 
 ## Command Line Commands
@@ -99,3 +99,16 @@ yarn run lint:server
 ```
 
 Will analyse only  `server/**/**.js` files
+
+#### Testing
+
+```Shell
+yarn run test
+```
+
+Tests your application modern JavaScript Testing Framework - Jest with the unit tests specified in the `**/__tests__/*.spec.js` and `**/__tests__/*.test.js`  files
+throughout the application.
+
+```Shell
+yarn run test:watch
+```
