@@ -15,7 +15,7 @@ const Leaderboard = (props) => {
             key={winner.winner + winner.date}
             className="px-4 py-2 my-px flex flex-grow justify-between rounded bg-gray-300 hover:bg-gray-400"
           >
-            <span className="text-left">{winner.winner}</span>
+            <span className="text-left mr-10">{winner.winner}</span>
             <span className="text-right">{winner.date}</span>
           </div>
         )
