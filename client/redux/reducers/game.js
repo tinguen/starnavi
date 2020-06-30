@@ -1,23 +1,10 @@
 import axios from 'axios'
 import shortid from 'shortid'
+import * as actionTypes from './action-types'
 
 // const SERVER_URL = 'starnav-frontend-test-task.herokuapp.com'
 export const COMPUTER = 'Computer'
-const SERVER_URL = window.location.origin
-
-const SET_NAME = 'SET_NAME'
-const INC_PLAYER_SCORE = 'INC_PLAYER_SCORE'
-const INC_COMPUTER_SCORE = 'INC_COMPUTER_SCORE'
-const SET_CURRENT_MODE = 'SET_CURRENT_MODE'
-const FETCH_MODES = 'FETCH_MODES'
-const FETCH_WINNERS = 'FETCH_WINNERS'
-const SET_WINNER = 'SET_WINNER'
-const CLEAR = 'CLEAR'
-const UPDATE_TILE_STATE = 'UPDATE_TILE_STATE'
-const SET_TIMEOUT_ID = 'SET_TIMEOUT_ID'
-const SET_SELECTED = 'SET_SELECTED'
-const CHANGE_IS_PLAYING = 'CHANGE_IS_PLAYING'
-const FILTER_MODES = 'FILTER_MODES'
+export const SERVER_URL = window.location.origin
 
 export const tileColorStates = {
   free: 0,
@@ -37,7 +24,7 @@ function getRandomTileId(tiles) {
   return items[Math.floor(Math.random() * items.length)].id
 }
 
-const initialState = {
+export const initialState = {
   tiles: [],
   currentMode: {},
   name: '',
@@ -54,16 +41,16 @@ const initialState = {
 
 export default (state = initialState, action) => {
   switch (action.type) {
-    case SET_NAME: {
+    case actionTypes.SET_NAME: {
       return { ...state, name: action.name }
     }
-    case INC_COMPUTER_SCORE: {
+    case actionTypes.INC_COMPUTER_SCORE: {
       return { ...state, computerScore: state.computerScore + 1 }
     }
-    case INC_PLAYER_SCORE: {
+    case actionTypes.INC_PLAYER_SCORE: {
       return { ...state, playerScore: state.playerScore + 1 }
     }
-    case SET_CURRENT_MODE: {
+    case actionTypes.SET_CURRENT_MODE: {
       return {
         ...state,
         currentMode: { name: action.mode, ...state.modes[action.mode] },
@@ -73,19 +60,19 @@ export default (state = initialState, action) => {
         }))
       }
     }
-    case FETCH_MODES: {
+    case actionTypes.FETCH_MODES: {
       return { ...state, modes: action.modes, allModes: action.allModes || action.modes }
     }
-    case CLEAR: {
+    case actionTypes.CLEAR: {
       return { ...initialState }
     }
-    case FETCH_WINNERS: {
+    case actionTypes.FETCH_WINNERS: {
       return { ...state, winners: action.winners }
     }
-    case SET_WINNER: {
+    case actionTypes.SET_WINNER: {
       return { ...state, winner: action.winner }
     }
-    case UPDATE_TILE_STATE: {
+    case actionTypes.UPDATE_TILE_STATE: {
       return {
         ...state,
         tiles: state.tiles.map((it) => {
@@ -96,16 +83,16 @@ export default (state = initialState, action) => {
         })
       }
     }
-    case SET_TIMEOUT_ID: {
+    case actionTypes.SET_TIMEOUT_ID: {
       return { ...state, timeoutId: action.timeoutId }
     }
-    case SET_SELECTED: {
+    case actionTypes.SET_SELECTED: {
       return { ...state, selected: action.selected }
     }
-    case CHANGE_IS_PLAYING: {
+    case actionTypes.CHANGE_IS_PLAYING: {
       return { ...state, isPlaying: !state.isPlaying }
     }
-    case FILTER_MODES: {
+    case actionTypes.FILTER_MODES: {
       return { ...state, modes: action.modes }
     }
     default:
@@ -118,44 +105,46 @@ export function fetchModes() {
     return axios
       .get(`${SERVER_URL}/api/v1/game-settings`)
       .then(({ data: modes }) => dispatch({ type: 'FETCH_MODES', modes }))
+      .catch(() => dispatch({ type: '' }))
   }
 }
 
 export function fetchWinners() {
-  return async (dispatch) => {
+  return (dispatch) => {
     return axios
       .get(`${SERVER_URL}/api/v1/winners`)
       .then(({ data: winners }) => dispatch({ type: 'FETCH_WINNERS', winners }))
+      .catch(() => dispatch({ type: '' }))
   }
 }
 
 export function clear() {
-  return { type: CLEAR }
+  return { type: actionTypes.CLEAR }
 }
 
 export function setTimeoutId(timeoutId) {
-  return { type: SET_TIMEOUT_ID, timeoutId }
+  return { type: actionTypes.SET_TIMEOUT_ID, timeoutId }
 }
 
 export function setWinner(winner) {
-  if (!(typeof winner === 'string')) return { type: '' }
-  return { type: SET_WINNER, winner }
+  if (typeof winner !== 'string') return { type: '' }
+  return { type: actionTypes.SET_WINNER, winner }
 }
 
 export function setName(name) {
   if (!(typeof name === 'string')) return { type: '' }
-  return { type: SET_NAME, name }
+  return { type: actionTypes.SET_NAME, name }
 }
 
 export function setSelected(selected) {
-  return { type: SET_SELECTED, selected }
+  return { type: actionTypes.SET_SELECTED, selected }
 }
 
 export function changeIsPlaying() {
   return (dispatch, getState) => {
     const { isPlaying, tiles } = getState().game
     if (!isPlaying) dispatch(setSelected(getRandomTileId(tiles)))
-    return dispatch({ type: CHANGE_IS_PLAYING })
+    return dispatch({ type: actionTypes.CHANGE_IS_PLAYING })
   }
 }
 
@@ -165,14 +154,14 @@ export function incPlayerScore() {
     const score = getState().game.playerScore
     if (score + 1 >= Math.ceil(field ** 2 / 2)) {
       const { name } = getState().game
-      dispatch({ type: INC_PLAYER_SCORE })
+      dispatch({ type: actionTypes.INC_PLAYER_SCORE })
       dispatch(setWinner(name))
       dispatch(changeIsPlaying())
       return postWinner(name).then(() => {
         return dispatch(fetchWinners())
       })
     }
-    return dispatch({ type: INC_PLAYER_SCORE })
+    return dispatch({ type: actionTypes.INC_PLAYER_SCORE })
   }
 }
 
@@ -181,14 +170,14 @@ export function incComputerScore() {
     const { field } = getState().game.currentMode
     const score = getState().game.computerScore
     if (score + 1 >= Math.ceil(field ** 2 / 2)) {
-      dispatch({ type: INC_COMPUTER_SCORE })
+      dispatch({ type: actionTypes.INC_COMPUTER_SCORE })
       dispatch(setWinner(COMPUTER))
       dispatch(changeIsPlaying())
       return postWinner(COMPUTER).then(() => {
         return dispatch(fetchWinners())
       })
     }
-    return dispatch({ type: INC_COMPUTER_SCORE })
+    return dispatch({ type: actionTypes.INC_COMPUTER_SCORE })
   }
 }
 
@@ -197,10 +186,10 @@ export function clearBoard() {
     const { modes, winners, name, currentMode, timeoutId, allModes } = getState().game
     clearTimeout(timeoutId)
     dispatch(clear())
-    dispatch({ type: FETCH_MODES, modes, allModes })
-    dispatch({ type: FETCH_WINNERS, winners })
-    if (currentMode.name) dispatch({ type: SET_CURRENT_MODE, mode: currentMode.name })
-    dispatch({ type: SET_NAME, name })
+    dispatch({ type: actionTypes.FETCH_MODES, modes, allModes })
+    dispatch({ type: actionTypes.FETCH_WINNERS, winners })
+    if (currentMode.name) dispatch({ type: actionTypes.SET_CURRENT_MODE, mode: currentMode.name })
+    dispatch({ type: actionTypes.SET_NAME, name })
   }
 }
 
@@ -209,7 +198,7 @@ export function setCurrentMode(mode) {
     const { modes } = getState().game
     if (!(mode in modes)) return dispatch({ type: '' })
     dispatch(clearBoard())
-    return dispatch({ type: SET_CURRENT_MODE, mode })
+    return dispatch({ type: actionTypes.SET_CURRENT_MODE, mode })
   }
 }
 
@@ -219,7 +208,7 @@ export function setTileState(id, newState) {
     switch (state) {
       case tileColorStates.free: {
         if (newState === tileColorStates.selected)
-          return dispatch({ type: UPDATE_TILE_STATE, id, state: newState })
+          return dispatch({ type: actionTypes.UPDATE_TILE_STATE, id, state: newState })
         break
       }
       case tileColorStates.selected: {
@@ -232,7 +221,7 @@ export function setTileState(id, newState) {
           dispatch(setTimeoutId(null))
 
           if (isPlaying && !winner) dispatch(setSelected(getRandomTileId(tiles)))
-          return dispatch({ type: UPDATE_TILE_STATE, id, state: newState })
+          return dispatch({ type: actionTypes.UPDATE_TILE_STATE, id, state: newState })
         }
         break
       }
@@ -247,7 +236,7 @@ export function addToModes(name, mode) {
   return (dispatch, getState) => {
     const modes = { ...getState().game.modes }
     modes[name] = mode
-    return dispatch({ type: FILTER_MODES, modes })
+    return dispatch({ type: actionTypes.FILTER_MODES, modes })
   }
 }
 
@@ -255,6 +244,6 @@ export function removeFromModes(name) {
   return (dispatch, getState) => {
     const modes = { ...getState().game.modes }
     delete modes[name]
-    return dispatch({ type: FILTER_MODES, modes })
+    return dispatch({ type: actionTypes.FILTER_MODES, modes })
   }
 }
