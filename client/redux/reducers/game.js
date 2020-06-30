@@ -118,7 +118,7 @@ export function fetchWinners() {
   return (dispatch) => {
     return axios
       .get(`${SERVER_URL}/winners`)
-      .then(({ data: winners }) => dispatch({ type: 'FETCH_WINNERS', winners }))
+      .then(({ data: winners }) => dispatch({ type: 'FETCH_WINNERS', winners: winners.reverse() }))
       .catch(() => dispatch({ type: '' }))
   }
 }
