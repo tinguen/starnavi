@@ -4,7 +4,7 @@ import * as actionTypes from './action-types'
 
 // const SERVER_URL = 'starnav-frontend-test-task.herokuapp.com'
 export const COMPUTER = 'Computer'
-export const SERVER_URL = window.location.origin
+export const SERVER_URL = 'https://starnavi-frontend-test-task.herokuapp.com'
 
 export const tileColorStates = {
   free: 0,
@@ -14,8 +14,13 @@ export const tileColorStates = {
 }
 
 function postWinner(winner) {
+  const date = new Date()
+  const year = new Intl.DateTimeFormat('en', { year: 'numeric' }).format(date)
+  const month = new Intl.DateTimeFormat('en', { month: 'long' }).format(date)
+  const day = new Intl.DateTimeFormat('en', { day: '2-digit' }).format(date)
+  const time = new Intl.DateTimeFormat('ru', { hour: 'numeric', minute: 'numeric' }).format(date)
   return axios
-    .post(`${SERVER_URL}/api/v1/winners`, { winner, date: new Date().toString() })
+    .post(`${SERVER_URL}/winners`, { winner, date: `${time}; ${day} ${month} ${year}` })
     .catch(() => {})
 }
 
@@ -103,7 +108,7 @@ export default (state = initialState, action) => {
 export function fetchModes() {
   return async (dispatch) => {
     return axios
-      .get(`${SERVER_URL}/api/v1/game-settings`)
+      .get(`${SERVER_URL}/game-settings`)
       .then(({ data: modes }) => dispatch({ type: 'FETCH_MODES', modes }))
       .catch(() => dispatch({ type: '' }))
   }
@@ -112,7 +117,7 @@ export function fetchModes() {
 export function fetchWinners() {
   return (dispatch) => {
     return axios
-      .get(`${SERVER_URL}/api/v1/winners`)
+      .get(`${SERVER_URL}/winners`)
       .then(({ data: winners }) => dispatch({ type: 'FETCH_WINNERS', winners }))
       .catch(() => dispatch({ type: '' }))
   }

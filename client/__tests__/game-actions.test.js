@@ -69,7 +69,7 @@ describe('actions', () => {
 
 describe('async actions', () => {
   it('should create FETCH_MODES when fetching modes has been done', () => {
-    const ENDPOINT = `${actions.SERVER_URL}/api/v1/game-settings`
+    const ENDPOINT = `${actions.SERVER_URL}/game-settings`
     const modes = {
       easyMode: { field: 5, delay: 2000 },
       normalMode: { field: 10, delay: 1000 },
@@ -90,7 +90,7 @@ describe('async actions', () => {
   })
 
   it('should create nothing when fetching modes has not been done', () => {
-    const ENDPOINT = `${actions.SERVER_URL}/api/v1/game-settings`
+    const ENDPOINT = `${actions.SERVER_URL}/game-settings`
 
     jest.mock('axios', () => jest.fn())
 
@@ -106,7 +106,7 @@ describe('async actions', () => {
   })
 
   it('should create FETCH_WINNERS when fetching winners has been done', () => {
-    const ENDPOINT = `${actions.SERVER_URL}/api/v1/winners`
+    const ENDPOINT = `${actions.SERVER_URL}/winners`
     const winners = [{ winner: 'winner', date: 'date' }]
 
     jest.mock('axios', () => jest.fn())
@@ -123,7 +123,7 @@ describe('async actions', () => {
   })
 
   it('should create nothing when fetching winners has not been done', () => {
-    const ENDPOINT = `${actions.SERVER_URL}/api/v1/winners`
+    const ENDPOINT = `${actions.SERVER_URL}/winners`
 
     jest.mock('axios', () => jest.fn())
 
@@ -184,7 +184,7 @@ describe('async actions', () => {
   })
 
   it('should post winner - player', () => {
-    const ENDPOINT = `${actions.SERVER_URL}/api/v1/winners`
+    const ENDPOINT = `${actions.SERVER_URL}/winners`
 
     jest.mock('axios', () => jest.fn())
 
@@ -231,7 +231,7 @@ describe('async actions', () => {
   })
 
   it('should post winner - computer', () => {
-    const ENDPOINT = `${actions.SERVER_URL}/api/v1/winners`
+    const ENDPOINT = `${actions.SERVER_URL}/winners`
 
     jest.mock('axios', () => jest.fn())
 

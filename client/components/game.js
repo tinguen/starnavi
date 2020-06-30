@@ -50,7 +50,7 @@ const Game = () => {
             winner === COMPUTER ? 'bg-red-500' : 'bg-green-500'
           } p-2 rounded m-2`}
         >
-          {winner === COMPUTER ? `${winner} won` : 'You won'}
+          {`${winner} won!`}
         </div>
         <div className="flex">
           <div className="m-2 text-gray-600 font-bold">You: {playerScore}</div>

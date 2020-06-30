@@ -13,15 +13,10 @@ const Leaderboard = (props) => {
         return (
           <div
             key={winner.winner + winner.date}
-            className="px-4 py-2 my-px w-48 flex justify-between rounded bg-gray-300 hover:bg-gray-400"
+            className="px-4 py-2 my-px flex flex-grow justify-between rounded bg-gray-300 hover:bg-gray-400"
           >
             <span className="text-left">{winner.winner}</span>
-            <span className="text-right">
-              {new Date(winner.date).toLocaleTimeString([], {
-                hour: '2-digit',
-                minute: '2-digit'
-              })}
-            </span>
+            <span className="text-right">{winner.date}</span>
           </div>
         )
       })}
