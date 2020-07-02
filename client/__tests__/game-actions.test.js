@@ -113,7 +113,12 @@ describe('async actions', () => {
 
     axios.get = jest.fn(() => Promise.resolve({ data: winners }))
 
-    const expectedActions = [{ type: types.FETCH_WINNERS, winners }]
+    const expectedActions = [
+      {
+        type: types.FETCH_WINNERS,
+        winners: winners.reverse().map((winner) => ({ ...winner, id: expect.any(String) }))
+      }
+    ]
     const store = createStore(actions.initialState)
 
     return store.dispatch(actions.fetchWinners()).then(() => {

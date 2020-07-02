@@ -12,7 +12,7 @@ const Leaderboard = (props) => {
       {winners.map((winner) => {
         return (
           <div
-            key={winner.winner + winner.date}
+            key={winner.id}
             className="px-4 py-2 my-px flex flex-grow justify-between rounded bg-gray-300 hover:bg-gray-400"
           >
             <span className="text-left mr-10">{winner.winner}</span>

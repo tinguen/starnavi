@@ -118,7 +118,12 @@ export function fetchWinners() {
   return (dispatch) => {
     return axios
       .get(`${SERVER_URL}/winners`)
-      .then(({ data: winners }) => dispatch({ type: 'FETCH_WINNERS', winners: winners.reverse() }))
+      .then(({ data: winners }) =>
+        dispatch({
+          type: 'FETCH_WINNERS',
+          winners: winners.reverse().map((winner) => ({ ...winner, id: shortid.generate() }))
+        })
+      )
       .catch(() => dispatch({ type: '' }))
   }
 }
